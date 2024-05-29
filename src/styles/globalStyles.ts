@@ -5,8 +5,7 @@ export const golabalStyles = StyleSheet.create ({
      container:{
         flex:1, 
         backgroundColor: colors.bgcolor,
-        padding:20,
-        paddingTop: Platform.OS === 'ios' ? 52 : 42,
+        // paddingTop: Platform.OS === 'ios' ? 52 : 42,
     },
     row:{
         flexDirection:'row',
@@ -29,11 +28,23 @@ export const golabalStyles = StyleSheet.create ({
     },
     setion:{
         marginBottom:16,
+        paddingHorizontal:20,
     },
     tag:{
         paddingHorizontal: 20,
         paddingVertical: Platform.OS === 'ios' ? 6 : 4,
         borderRadius:100,
         backgroundColor: colors.blue,
-    }
+    },
+    card:{
+        borderRadius: 12,
+    },
+    iconContainer:{
+        width:40, 
+            height:40, borderRadius: 100, 
+            justifyContent:'center', 
+            alignItems:'center', 
+            backgroundColor:'rgba(0,0,0,0.2)',
+            marginBottom: 16
+            },
 })

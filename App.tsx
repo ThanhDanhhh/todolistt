@@ -1,4 +1,4 @@
-import { View, Text, StatusBar } from 'react-native'
+import { View, Text, StatusBar, SafeAreaView } from 'react-native'
 import React from 'react'
 import HomeScreen from './src/homes/HomeScreen'
 import 'react-native-gesture-handler'
@@ -7,11 +7,15 @@ import 'react-native-gesture-handler'
 const  App = () => {
   return (
     <>
-    <StatusBar 
+     <StatusBar 
     translucent 
     barStyle={"light-content"} 
-    backgroundColor={"transparent"}/>
+    // backgroundColor={"transparent"}
+    />
+    <SafeAreaView style={{flex:1}}>
+   
      <HomeScreen/>
+    </SafeAreaView>
     </>
   )
 }
