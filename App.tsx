@@ -1,23 +1,20 @@
-import { View, Text, StatusBar, SafeAreaView } from 'react-native'
-import React from 'react'
-import HomeScreen from './src/homes/HomeScreen'
-import 'react-native-gesture-handler'
+import {View, Text, SafeAreaView, StatusBar} from 'react-native';
+import React from 'react';
+import {colors} from './src/contants/colors';
+import {NavigationContainer} from '@react-navigation/native';
+import Router from './src/routers/Router';
 
-
-const  App = () => {
+const App = () => {
   return (
     <>
-     <StatusBar 
-    translucent 
-    barStyle={"light-content"} 
-    // backgroundColor={"transparent"}
-    />
-    <SafeAreaView style={{flex:1}}>
-   
-     <HomeScreen/>
-    </SafeAreaView>
+      <SafeAreaView style={{flex: 1, backgroundColor: colors.bgcolor}}>
+        <StatusBar barStyle="light-content" backgroundColor={colors.bgcolor} />
+        <NavigationContainer>
+          <Router />
+        </NavigationContainer>
+      </SafeAreaView>
     </>
-  )
-}
+  );
+};
 
-export default  App;
+export default App;

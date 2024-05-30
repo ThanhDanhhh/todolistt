@@ -1,4 +1,3 @@
-
 import React from 'react';
 import CircularProgress from 'react-native-circular-progress-indicator';
 import {colors} from '../contants/colors';

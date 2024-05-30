@@ -1,17 +1,14 @@
-import { View, Text } from 'react-native'
-import React, { ReactNode } from 'react'
-import { golabalStyles } from '../styles/globalStyles';
+import {View, StyleProp, ViewStyle, StyleSheet} from 'react-native';
+import React, {ReactNode} from 'react';
+import {golabalStyles} from '../styles/globalStyles';
 
 interface Props {
-    children: ReactNode,
+  children: ReactNode;
+  styles?: StyleProp<ViewStyle>;
 }
 const SectionComponet = (props: Props) => {
-    const {children} = props;
-  return (
-    <View style={[ golabalStyles.setion ]}>
-    {children}
-    </View>
-  )
-}
+  const {children, styles} = props;
+  return <View style={[golabalStyles.setion, styles]}>{children}</View>;
+};
 
 export default SectionComponet;
