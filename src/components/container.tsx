@@ -42,7 +42,7 @@ const Container = (props: Props) => {
         <View style={{flex: 1, zIndex: -1}}>
           {title && (
             <TextComponent
-              flew={1}
+              flex={1}
               font={fontFamilies.bold}
               size={16}
               text={title}

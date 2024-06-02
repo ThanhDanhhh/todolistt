@@ -39,7 +39,7 @@ const ProgressBarComponent = (props: Props) => {
         <TextComponent
           text={`${percent}`}
           size={12}
-          flew={0}
+          flex={0}
           font={fontFamilies.bold}
         />
       </RowComponent>

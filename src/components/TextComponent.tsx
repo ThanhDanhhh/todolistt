@@ -9,17 +9,19 @@ interface Props {
   size?: number;
   font?: string;
   color?: string;
-  flew?: number;
+  flex?: number;
   styles?: StyleProp<TextStyle>;
 }
+
 const TextComponent = (props: Props) => {
-  const {text, size, font, color, flew, styles} = props;
+  const {text, font, size, color, flex, styles} = props;
+
   return (
     <Text
       style={[
         golabalStyles.text,
         {
-          flex: flew ?? 1,
+          flex: flex ?? 1,
           fontFamily: font ?? fontFamilies.regular,
           fontSize: size ?? 14,
           color: color ?? colors.desc,

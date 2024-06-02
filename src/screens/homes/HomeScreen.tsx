@@ -138,7 +138,7 @@ const HomeScreen = ({navigation}: any) => {
         </SectionComponent>
         <SectionComponent>
           <TextComponent
-            flew={1}
+            flex={1}
             font={fontFamilies.bold}
             size={21}
             text="Urgents tasks"
@@ -177,7 +177,7 @@ const HomeScreen = ({navigation}: any) => {
               width: '80%',
             },
           ]}>
-          <TextComponent text="Add new tasks" flew={0} />
+          <TextComponent text="Add new tasks" />
           <Add size={22} color={colors.white} />
         </TouchableOpacity>
       </View>
