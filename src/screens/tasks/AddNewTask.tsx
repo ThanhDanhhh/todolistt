@@ -1,13 +1,12 @@
 import React, {useState} from 'react';
 import {Button, View} from 'react-native';
 import Container from '../../components/container';
-// import DateTimePickerComponent from '../../components/DateTimePickerComponent';
+import DateTimePickerComponent from '../../components/DateTimePickerComponent';
 import InputComponent from '../../components/InputComponent';
 import RowComponent from '../../components/RowComponent';
 import SectionComponent from '../../components/SectionComponet';
 import SpaceComponent from '../../components/SpaceComponent';
 import {TaskModel} from '../../models/TaskModel';
-import TitleComponent from '../../components/TitleComponent';
 
 const initValue: TaskModel = {
   title: '',
@@ -44,7 +43,6 @@ const AddNewTask = ({navigation}: any) => {
           allowClear
           placeholder="Title of task"
         />
-
         <InputComponent
           value={taskDetail.desctiption}
           onChange={val => handleChangeValue('desctiption', val)}
@@ -54,8 +52,35 @@ const AddNewTask = ({navigation}: any) => {
           multible
           numberOfLine={3}
         />
-      </SectionComponent>
 
+        <DateTimePickerComponent
+          selected={taskDetail.dueDate}
+          onSelect={val => handleChangeValue('dueDate', val)}
+          placeholder="Choice"
+          type="date"
+          title="Due date"
+        />
+
+        <RowComponent>
+          <View style={{flex: 1}}>
+            <DateTimePickerComponent
+              selected={taskDetail.start}
+              type="time"
+              onSelect={val => handleChangeValue('start', val)}
+              title="Start"
+            />
+          </View>
+          <SpaceComponent width={14} />
+          <View style={{flex: 1}}>
+            <DateTimePickerComponent
+              selected={taskDetail.end}
+              onSelect={val => handleChangeValue('end', val)}
+              title="End"
+              type="time"
+            />
+          </View>
+        </RowComponent>
+      </SectionComponent>
       <SectionComponent>
         <Button title="Save" onPress={handleAddNewTask} />
       </SectionComponent>
