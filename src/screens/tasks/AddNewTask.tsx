@@ -10,7 +10,7 @@ import {TaskModel} from '../../models/TaskModel';
 
 const initValue: TaskModel = {
   title: '',
-  desctiption: '',
+  description: '',
   dueDate: new Date(),
   start: new Date(),
   end: new Date(),
@@ -44,7 +44,7 @@ const AddNewTask = ({navigation}: any) => {
           placeholder="Title of task"
         />
         <InputComponent
-          value={taskDetail.desctiption}
+          value={taskDetail.description}
           onChange={val => handleChangeValue('desctiption', val)}
           title="Description"
           allowClear
