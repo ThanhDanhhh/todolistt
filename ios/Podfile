@@ -7,6 +7,10 @@ require Pod::Executable.execute_command('node', ['-p',
 
 platform :ios, min_ios_version_supported
 prepare_react_native_project!
+use_frameworks! :linkage => :static
+$RNFirebaseAsStaticFramework = true
+
+
 
 linkage = ENV['USE_FRAMEWORKS']
 if linkage != nil
@@ -20,6 +24,7 @@ target 'todolistt' do
   use_react_native!(
     :path => config[:reactNativePath],
     # An absolute path to your application root.
+    :hermes_enabled => false,
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
