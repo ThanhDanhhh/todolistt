@@ -1,6 +1,6 @@
 export interface TaskModel {
   title: string;
-  desctiption: string;
+  description: string;
   dueDate: Date;
   start: Date;
   end: Date;
