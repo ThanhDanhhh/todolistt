@@ -45,7 +45,7 @@ const AddNewTask = ({navigation}: any) => {
         />
         <InputComponent
           value={taskDetail.description}
-          onChange={val => handleChangeValue('desctiption', val)}
+          onChange={val => handleChangeValue('description', val)}
           title="Description"
           allowClear
           placeholder="Content"
