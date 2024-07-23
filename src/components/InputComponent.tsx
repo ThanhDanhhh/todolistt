@@ -88,7 +88,7 @@ const InputComponent = (props: Props) => {
           </TouchableOpacity>
         )}
 
-        {/* {isPassword && (
+        {isPassword && (
           <TouchableOpacity onPress={() => setShowPass(!showPass)}>
             {showPass ? (
               <EyeSlash size={20} color={colors.desc} />
@@ -96,7 +96,7 @@ const InputComponent = (props: Props) => {
               <Eye size={20} color={colors.desc} />
             )}
           </TouchableOpacity>
-        )} */}
+        )}
       </RowComponent>
     </View>
   );

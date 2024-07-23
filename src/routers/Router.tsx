@@ -6,6 +6,7 @@ import AddNewTask from '../screens/tasks/AddNewTask';
 import SearchScreen from '../screens/SearchScreen';
 import auth from '@react-native-firebase/auth';
 import LoginScreen from '../auth/LoginScreen';
+import RegisterScreen from '../auth/RegisterScreen';
 
 const Router = () => {
   const [isLogin, setIsLogin] = useState(false);
@@ -31,12 +32,16 @@ const Router = () => {
     </Stack.Navigator>
   );
 
-  const AuthRouter = (
-    <Stack.Navigator screenOptions={{headerShown: false}}>
+  const AuthNavigator = (
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}>
       <Stack.Screen name="LoginScreen" component={LoginScreen} />
+      <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
     </Stack.Navigator>
   );
-  return isLogin ? MainRouter : AuthRouter;
+  return isLogin ? MainRouter : AuthNavigator;
 };
 
 export default Router;
