@@ -1,4 +1,5 @@
 export interface TaskModel {
+  id: string;
   title: string;
   description: string;
   dueDate: Date;
@@ -7,4 +8,5 @@ export interface TaskModel {
   uids: string[];
   color?: string;
   fileUrls: string[];
+  progress?: string;
 }

@@ -7,15 +7,20 @@ import {colors} from '../contants/colors';
 import {TextalignJustifycenter} from 'iconsax-react-native';
 import {fontFamilies} from '../contants/fontFamilies';
 
-const imageStyle = {
-  width: 32,
-  height: 32,
-  borderRadius: 100,
-  borderColor: colors.white,
-};
-const AvatarGroup = () => {
+interface Props {
+  uids: string[];
+}
+
+const AvatarGroup = (props: Props) => {
+  const {uids} = props;
   const uidsLenght = 10;
   const imageUrl = `https://gamek.mediacdn.vn/133514250583805952/2022/5/18/photo-1-16528608926331302726659.jpg`;
+  const imageStyle = {
+    width: 32,
+    height: 32,
+    borderRadius: 100,
+    borderColor: colors.white,
+  };
   return (
     <RowComponent styles={{justifyContent: 'flex-start'}}>
       {Array.from({length: 10}).map(
@@ -41,7 +46,7 @@ const AvatarGroup = () => {
             },
           ]}>
           <TextComponent
-            flew={0}
+            flex={0}
             styles={{
               lineHeight: 19,
             }}
