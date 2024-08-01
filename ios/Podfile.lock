@@ -2259,7 +2259,7 @@ PODS:
     - Firebase/Storage (= 10.27.0)
     - React-Core
     - RNFBApp
-  - RNGestureHandler (2.16.2):
+  - RNGestureHandler (2.17.1):
     - DoubleConversion
     - glog
     - RCT-Folly (= 2024.01.01.00)
@@ -2628,7 +2628,7 @@ SPEC CHECKSUMS:
   RNFBAuth: 58a7a5591755a4f078cfa03e29a60be009a93931
   RNFBFirestore: a60f00920799fa7bb71a1ecb682e4e6918f6f2b0
   RNFBStorage: d4935d5db062e552edb623d77e7c460dc45d35d1
-  RNGestureHandler: a5d0b4dd7f5cb1fc06cf09cfa8ee0dfb5c579b65
+  RNGestureHandler: b8c806db5b0fc1e8033463f3fcc1d7789e09d925
   RNReanimated: 669b9c611bdccd0fb897ea8df181bcc340d45f16
   RNScreens: baa80504a942be4a5bf669dc97ea0bb8997d6867
   RNSVG: a48668fd382115bc89761ce291a81c4ca5f2fd2e

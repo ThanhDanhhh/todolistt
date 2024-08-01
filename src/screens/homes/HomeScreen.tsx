@@ -26,20 +26,21 @@ import {golabalStyles} from '../../styles/globalStyles';
 import auth from '@react-native-firebase/auth';
 import firestore, {onSnapshot} from '@react-native-firebase/firestore';
 import {TaskModel} from '../../models/TaskModel';
+// import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const HomeScreen = ({navigation}: any) => {
   const handleSingout = async () => {
     await auth().signOut();
   };
 
-  const [isLoading, setisLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [tasks, settasks] = useState<TaskModel[]>([]);
   useEffect(() => {
     getNewTasks();
   }, []);
-  const getNewTasks = async () => {
-    setisLoading(true);
-    await firestore()
+  const getNewTasks = () => {
+    setIsLoading(true);
+    firestore()
       .collection('tasks')
       .orderBy('dueDate')
       .limitToLast(3)
@@ -48,20 +49,16 @@ const HomeScreen = ({navigation}: any) => {
           console.log('tasks not found');
         } else {
           const items: TaskModel[] = [];
-          snap.forEach((item: any) =>
+          snap.forEach((item: any) => {
             items.push({
               id: item.id,
               ...item.data(),
-            }),
-          );
-          setisLoading(false);
+            });
+          });
+          setIsLoading(false);
           settasks(items);
         }
       });
-    // .catch(error => {
-    //   setisLoading(false);
-    //   console.log(error);
-    // });
   };
   return (
     <View style={{flex: 1}}>
@@ -123,7 +120,12 @@ const HomeScreen = ({navigation}: any) => {
             <RowComponent styles={{alignItems: 'flex-start'}}>
               <View style={{flex: 1}}>
                 {tasks[1] && (
-                  <CardImageConponent>
+                  <CardImageConponent
+                    onPress={() =>
+                      navigation.navigate('TaskDetail', {
+                        id: tasks[1].id,
+                      })
+                    }>
                     <TouchableOpacity
                       onPress={() => {}}
                       style={golabalStyles.iconContainer}>
@@ -153,7 +155,14 @@ const HomeScreen = ({navigation}: any) => {
               <SpaceComponent width={16} />
               <View style={{flex: 1}}>
                 {tasks[1] && (
-                  <CardImageConponent color="rgba(33, 150, 243, 0.9)">
+                  <CardImageConponent
+                    onPress={() =>
+                      navigation.navigate('TaskDetail', {
+                        id: tasks[1].id,
+                        color: 'rgba(33, 150, 243, 0.9)',
+                      })
+                    }
+                    color="rgba(33, 150, 243, 0.9)">
                     <TouchableOpacity
                       onPress={() => {}}
                       style={golabalStyles.iconContainer}>
@@ -169,7 +178,14 @@ const HomeScreen = ({navigation}: any) => {
 
                 <SpaceComponent height={16} />
                 {tasks[2] && (
-                  <CardImageConponent color="rgba(18, 181, 22, 0.9)">
+                  <CardImageConponent
+                    onPress={() =>
+                      navigation.navigate('TaskDetail', {
+                        id: tasks[1].id,
+                        color: 'rgba(18, 181, 22, 0.9)',
+                      })
+                    }
+                    color="rgba(18, 181, 22, 0.9)">
                     <TouchableOpacity
                       onPress={() => {}}
                       style={golabalStyles.iconContainer}>

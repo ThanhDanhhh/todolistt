@@ -30,6 +30,7 @@ const initValue: TaskModel = {
   end: new Date(),
   uids: [],
   fileUrls: [],
+  id: '',
 };
 
 const AddNewTask = ({navigation}: any) => {
@@ -49,7 +50,7 @@ const AddNewTask = ({navigation}: any) => {
       .get()
       .then(snap => {
         if (snap.empty) {
-          console.log('Users data not found ');
+          console.log(`Users data not found `);
         } else {
           const items: SelectModel[] = [];
           snap.forEach(item => {

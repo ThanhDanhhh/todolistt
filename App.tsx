@@ -7,12 +7,12 @@ import Router from './src/routers/Router';
 const App = () => {
   return (
     <>
-      <SafeAreaView style={{flex: 1, backgroundColor: colors.bgcolor}}>
-        <StatusBar barStyle="light-content" backgroundColor={colors.bgcolor} />
-        <NavigationContainer>
-          <Router />
-        </NavigationContainer>
-      </SafeAreaView>
+      {/* <SafeAreaView style={{flex: 1, backgroundColor: colors.bgcolor}}> */}
+      <StatusBar barStyle="light-content" backgroundColor={colors.bgcolor} />
+      <NavigationContainer>
+        <Router />
+      </NavigationContainer>
+      {/* </SafeAreaView> */}
     </>
   );
 };

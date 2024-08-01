@@ -13,10 +13,11 @@ interface Props {
   size?: number;
   color?: string;
   flex?: number;
+  height?: number;
 }
 
 const TitleComponent = (props: Props) => {
-  const {text, font, size, styles, color, flex} = props;
+  const {text, font, size, color, styles, height, flex} = props;
   const weight: any =
     Platform.OS === 'ios'
       ? font
@@ -28,20 +29,22 @@ const TitleComponent = (props: Props) => {
     <TextComponent
       size={size ?? 20}
       font={font ?? fontFamilies.semibold}
-      color={color}
-      text={text}
       styles={[
         golabalStyles.text,
         weight,
         {
           fontFamily: font ?? fontFamilies.bold,
           fontSize: size ?? 16,
-          lineHeight: weight ? weight : size ? size + 4 : 20,
+          lineHeight: height ? height : size ? size : 20,
           color: color ? color : colors.text,
           flex: flex ?? 0,
+          marginBottom: 8,
         },
+        styles,
       ]}
-      flex={flex ?? 1}
+      color={color}
+      text={text}
+      // flex={flex ?? 1}
     />
   );
 };

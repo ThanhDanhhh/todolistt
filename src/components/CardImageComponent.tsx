@@ -1,14 +1,17 @@
 import {View, Text, ImageBackground} from 'react-native';
 import React, {ReactNode} from 'react';
 import {golabalStyles} from '../styles/globalStyles';
+import {TouchableOpacity} from 'react-native';
 
 interface Props {
   children: ReactNode;
   color?: string;
+  onPress?: () => void;
 }
 const CardImageComponent = (props: Props) => {
-  const {children, color} = props;
-  return (
+  const {children, color, onPress} = props;
+
+  const renderCard = (
     <ImageBackground
       imageStyle={{borderRadius: 12}}
       source={require('../assets/images/card-bg.png')}
@@ -31,6 +34,11 @@ const CardImageComponent = (props: Props) => {
         {children}
       </View>
     </ImageBackground>
+  );
+  return onPress ? (
+    <TouchableOpacity onPress={onPress}>{renderCard}</TouchableOpacity>
+  ) : (
+    renderCard
   );
 };
 
