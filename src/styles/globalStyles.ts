@@ -17,6 +17,9 @@ export const golabalStyles = StyleSheet.create({
     fontFamily: fontFamilies.regular,
     color: colors.text,
   },
+  documentImg: {
+    marginHorizontal: 4,
+  },
   inputContainer: {
     backgroundColor: colors.gray,
     borderRadius: 12,

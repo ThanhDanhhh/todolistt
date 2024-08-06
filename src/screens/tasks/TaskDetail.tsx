@@ -13,10 +13,14 @@ import TextComponent from '../../components/TextComponent';
 import {colors} from '../../contants/colors';
 import RowComponent from '../../components/RowComponent';
 import {
+  AddSquare,
+  AlignLeft,
   ArrowDown2,
   ArrowLeft2,
   CalendarEdit,
   Clock,
+  DocumentUpload,
+  TickCircle,
 } from 'iconsax-react-native';
 import firestore from '@react-native-firebase/firestore';
 import {TaskModel} from '../../models/TaskModel';
@@ -25,6 +29,12 @@ import SpaceComponent from '../../components/SpaceComponent';
 import AvatarGroup from '../../components/AvatarGroup';
 import {HandleDateTime} from '../../utils/handleDateTime';
 import CardComponent from '../../components/CardComponent';
+import Foundation from 'react-native-vector-icons/Foundation';
+import Ionicons from '@react-native-vector-icons/ionicons';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import {fontFamilies} from '../../contants/fontFamilies';
 
 const TaskDetail = ({navigation, route}: any) => {
   const {id, color}: {id: string; color?: string} = route.params;
@@ -102,9 +112,109 @@ const TaskDetail = ({navigation, route}: any) => {
 
       <SectionComponet>
         <TitleComponent text="Description" size={22} />
-        <CardComponent bgcolor={colors.bgcolor}>
+        <CardComponent
+          bgcolor={colors.bgcolor}
+          styles={{
+            borderWidth: 1,
+            borderColor: colors.gray,
+            borderRadius: 20,
+            marginTop: 12,
+          }}>
           <TextComponent text={taskDetail.description} />
         </CardComponent>
+      </SectionComponet>
+      <SectionComponet>
+        <CardComponent>
+          <RowComponent>
+            <TextComponent text="Files & Links" flex={0} />
+            <RowComponent styles={{flex: 1}}>
+              <Ionicons
+                style={golabalStyles.documentImg}
+                name="document"
+                size={38}
+                color={'#0263D1'}
+              />
+              <AntDesign
+                style={golabalStyles.documentImg}
+                name="pdffile1"
+                size={34}
+                color={'#E5252A'}
+              />
+              <MaterialCommunityIcons
+                style={golabalStyles.documentImg}
+                name="file-excel"
+                size={38}
+                color={colors.success}
+              />
+              <AntDesign
+                style={golabalStyles.documentImg}
+                name="addfile"
+                size={32}
+                color={colors.white}
+              />
+            </RowComponent>
+          </RowComponent>
+        </CardComponent>
+      </SectionComponet>
+      <SectionComponet>
+        <RowComponent>
+          <View
+            style={{
+              width: 24,
+              height: 24,
+              borderRadius: 100,
+              borderWidth: 2,
+              borderColor: colors.success,
+              marginRight: 4,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <View
+              style={{
+                backgroundColor: colors.success,
+                width: 16,
+                height: 16,
+                borderRadius: 100,
+              }}
+            />
+          </View>
+          <TextComponent
+            flex={1}
+            text="Progress"
+            font={fontFamilies.medium}
+            size={18}
+          />
+        </RowComponent>
+        <SpaceComponent height={12} />
+        <RowComponent>
+          <View style={{flex: 1}}>
+            <TextComponent text="slide" />
+          </View>
+          <TextComponent
+            text={`70%`}
+            font={fontFamilies.bold}
+            size={18}
+            flex={0}
+          />
+        </RowComponent>
+      </SectionComponet>
+      <SectionComponet>
+        <RowComponent>
+          <TitleComponent flex={1} text="Sub tasks" size={20} />
+          <TouchableOpacity>
+            <AddSquare size={24} color={colors.success} variant="Bold" />
+          </TouchableOpacity>
+        </RowComponent>
+        <SpaceComponent height={12} />
+        {Array.from({length: 3}).map((item, index) => (
+          <CardComponent key={`subtask${index}`} styles={{marginBottom: 12}}>
+            <RowComponent>
+              <TickCircle variant="Bold" color={colors.success} size={22} />
+              <SpaceComponent width={8} />
+              <TextComponent text="fa fa" />
+            </RowComponent>
+          </CardComponent>
+        ))}
       </SectionComponet>
     </ScrollView>
   ) : (
