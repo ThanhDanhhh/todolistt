@@ -26,6 +26,7 @@ import {golabalStyles} from '../../styles/globalStyles';
 import auth from '@react-native-firebase/auth';
 import firestore, {onSnapshot} from '@react-native-firebase/firestore';
 import {TaskModel} from '../../models/TaskModel';
+import {HandleDateTime} from '../../utils/handleDateTime';
 // import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const HomeScreen = ({navigation}: any) => {
@@ -132,7 +133,11 @@ const HomeScreen = ({navigation}: any) => {
                       <Edit2 size={20} color={colors.white} />
                     </TouchableOpacity>
                     <TitleComponent text={tasks[0].title} />
-                    <TextComponent text={tasks[0].description} size={13} />
+                    <TextComponent
+                      text={tasks[0].description}
+                      size={13}
+                      line={3}
+                    />
 
                     <View style={{marginVertical: 28}}>
                       <AvatarGroup uids={tasks[0].uids} />
@@ -144,11 +149,15 @@ const HomeScreen = ({navigation}: any) => {
                         />
                       )}
                     </View>
-                    <TextComponent
-                      text={`Due ${new Date(tasks[0].dueDate.toDate())}`}
-                      size={12}
-                      color={colors.desc}
-                    />
+                    {tasks[0].dueDate && (
+                      <TextComponent
+                        text={`Due ${HandleDateTime.DateString(
+                          tasks[0].dueDate.toDate(),
+                        )}`}
+                        size={12}
+                        color={colors.desc}
+                      />
+                    )}
                   </CardImageConponent>
                 )}
               </View>
