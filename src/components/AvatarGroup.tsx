@@ -33,8 +33,9 @@ const AvatarGroup = (props: Props) => {
             />
           ),
       )}
-      {uidsLenght > 5 && (
+      {uidsLenght > 3 && (
         <View
+          key={'total'}
           style={[
             imageStyle,
             {

@@ -8,5 +8,14 @@ export interface TaskModel {
   uids: string[];
   color?: string;
   fileUrls: string[];
-  progress?: string;
+  attachments: Attachment[];
+
+  progress?: number;
+}
+
+export interface Attachment {
+  name: string;
+  url: string;
+  size: number;
+  type?: string;
 }

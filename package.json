@@ -10,6 +10,8 @@
     "test": "jest"
   },
   "dependencies": {
+    "@miblanchard/react-native-slider": "^2.6.0",
+    "@react-native-community/slider": "^4.5.2",
     "@react-native-firebase/app": "^20.1.0",
     "@react-native-firebase/auth": "^20.1.0",
     "@react-native-firebase/firestore": "^20.1.0",
@@ -20,6 +22,7 @@
     "iconsax-react-native": "^0.0.8",
     "react": "18.2.0",
     "react-native": "0.74.1",
+    "react-native-awesome-slider": "^2.5.3",
     "react-native-circular-progress-indicator": "^4.4.2",
     "react-native-date-picker": "^5.0.4",
     "react-native-document-picker": "^9.3.0",

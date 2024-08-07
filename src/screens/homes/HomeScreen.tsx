@@ -1,3 +1,5 @@
+import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
 import {
   Add,
   Edit2,
@@ -12,7 +14,6 @@ import AvatarGroup from '../../components/AvatarGroup';
 import CardComponent from '../../components/CardComponent';
 import CardImageConponent from '../../components/CardImageComponent';
 import CicularComponent from '../../components/CicularComponent';
-import Container from '../../components/container';
 import ProgressBarComponent from '../../components/ProgressBarComponent';
 import RowComponent from '../../components/RowComponent';
 import SectionComponent from '../../components/SectionComponet';
@@ -20,25 +21,23 @@ import SpaceComponent from '../../components/SpaceComponent';
 import TagComponent from '../../components/TagComponent';
 import TextComponent from '../../components/TextComponent';
 import TitleComponent from '../../components/TitleComponent';
+import Container from '../../components/container';
 import {colors} from '../../contants/colors';
 import {fontFamilies} from '../../contants/fontFamilies';
-import {golabalStyles} from '../../styles/globalStyles';
-import auth from '@react-native-firebase/auth';
-import firestore, {onSnapshot} from '@react-native-firebase/firestore';
 import {TaskModel} from '../../models/TaskModel';
+import {golabalStyles} from '../../styles/globalStyles';
 import {HandleDateTime} from '../../utils/handleDateTime';
-// import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const HomeScreen = ({navigation}: any) => {
-  const handleSingout = async () => {
-    await auth().signOut();
-  };
+  const user = auth().currentUser;
 
   const [isLoading, setIsLoading] = useState(false);
-  const [tasks, settasks] = useState<TaskModel[]>([]);
+  const [tasks, setTasks] = useState<TaskModel[]>([]);
+
   useEffect(() => {
     getNewTasks();
   }, []);
+
   const getNewTasks = () => {
     setIsLoading(true);
     firestore()
@@ -57,7 +56,7 @@ const HomeScreen = ({navigation}: any) => {
             });
           });
           setIsLoading(false);
-          settasks(items);
+          setTasks(items);
         }
       });
   };
@@ -76,10 +75,10 @@ const HomeScreen = ({navigation}: any) => {
               style={{
                 flex: 1,
               }}>
-              <TextComponent text="Hi, Jason" />
+              <TextComponent text={`hi,${user?.email}`} />
               <TitleComponent text="Be Productive today" />
             </View>
-            <TouchableOpacity onPress={handleSingout}>
+            <TouchableOpacity onPress={async () => auth().signOut()}>
               <Logout size={22} color="coral" />
             </TouchableOpacity>
           </RowComponent>
@@ -87,9 +86,7 @@ const HomeScreen = ({navigation}: any) => {
         <SectionComponent>
           <RowComponent
             styles={[golabalStyles.inputContainer]}
-            onPress={() => navigation.navigate('SearchScreen')}
-            // onPress={() => console.log('hello baby')}
-          >
+            onPress={() => navigation.navigate('SearchScreen')}>
             <TextComponent color="#696B6F" text="Search task" />
             <SearchNormal1 size={20} color={colors.desc} />
           </RowComponent>
@@ -124,11 +121,16 @@ const HomeScreen = ({navigation}: any) => {
                   <CardImageConponent
                     onPress={() =>
                       navigation.navigate('TaskDetail', {
-                        id: tasks[1].id,
+                        id: tasks[0].id,
                       })
                     }>
                     <TouchableOpacity
-                      onPress={() => {}}
+                      onPress={() =>
+                        navigation.navigate('AddNewTask', {
+                          editable: true,
+                          task: tasks[0],
+                        })
+                      }
                       style={golabalStyles.iconContainer}>
                       <Edit2 size={20} color={colors.white} />
                     </TouchableOpacity>
@@ -141,13 +143,14 @@ const HomeScreen = ({navigation}: any) => {
 
                     <View style={{marginVertical: 28}}>
                       <AvatarGroup uids={tasks[0].uids} />
-                      {tasks[0].progress && (
+                      {tasks[0].progress &&
+                      (tasks[0].progress as number) >= 0 ? (
                         <ProgressBarComponent
-                          percent="70%"
+                          percent={`${Math.floor(tasks[0].progress * 100)}%`}
                           color="#0AACFF"
                           size="large"
                         />
-                      )}
+                      ) : null}
                     </View>
                     {tasks[0].dueDate && (
                       <TextComponent
@@ -173,14 +176,22 @@ const HomeScreen = ({navigation}: any) => {
                     }
                     color="rgba(33, 150, 243, 0.9)">
                     <TouchableOpacity
-                      onPress={() => {}}
+                      onPress={() =>
+                        navigation.navigate('AddNewTask', {
+                          editable: true,
+                          task: tasks[1],
+                        })
+                      }
                       style={golabalStyles.iconContainer}>
                       <Edit2 size={20} color={colors.white} />
                     </TouchableOpacity>
                     <TitleComponent text={tasks[1].title} size={18} />
                     {tasks[1].uids && <AvatarGroup uids={tasks[1].uids} />}
                     {tasks[1].progress && (
-                      <ProgressBarComponent percent="40%" color="#A2F068" />
+                      <ProgressBarComponent
+                        percent={`${Math.floor(tasks[1].progress * 100)}%`}
+                        color="#A2F068"
+                      />
                     )}
                   </CardImageConponent>
                 )}
@@ -190,13 +201,18 @@ const HomeScreen = ({navigation}: any) => {
                   <CardImageConponent
                     onPress={() =>
                       navigation.navigate('TaskDetail', {
-                        id: tasks[1].id,
+                        id: tasks[2].id,
                         color: 'rgba(18, 181, 22, 0.9)',
                       })
                     }
                     color="rgba(18, 181, 22, 0.9)">
                     <TouchableOpacity
-                      onPress={() => {}}
+                      onPress={() =>
+                        navigation.navigate('AddNewTask', {
+                          editable: true,
+                          task: tasks[2],
+                        })
+                      }
                       style={golabalStyles.iconContainer}>
                       <Edit2 size={20} color={colors.white} />
                     </TouchableOpacity>
@@ -241,7 +257,12 @@ const HomeScreen = ({navigation}: any) => {
         }}>
         <TouchableOpacity
           activeOpacity={1}
-          onPress={() => navigation.navigate('AddNewTask')}
+          onPress={() =>
+            navigation.navigate('AddNewTask', {
+              editable: false,
+              task: undefined,
+            })
+          }
           style={[
             golabalStyles.row,
             {
