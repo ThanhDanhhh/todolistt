@@ -1,4 +1,4 @@
-import {Platform, StyleSheet} from 'react-native';
+import {Dimensions, Platform, StyleSheet} from 'react-native';
 import {colors} from '../contants/colors';
 import {fontFamilies} from '../contants/fontFamilies';
 export const golabalStyles = StyleSheet.create({
@@ -47,5 +47,20 @@ export const golabalStyles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'rgba(0,0,0,0.2)',
     marginBottom: 16,
+  },
+  modal: {
+    flex: 1,
+  },
+  modalContainer: {
+    padding: 20,
+    backgroundColor: 'rgba(0,0,0,0.8)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalContent: {
+    width: Dimensions.get('window').width * 0.8,
+    padding: 20,
+    borderRadius: 12,
+    backgroundColor: colors.white,
   },
 });

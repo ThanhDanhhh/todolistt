@@ -24,6 +24,7 @@ interface Props {
   numberOfLine?: number;
   type?: KeyboardTypeOptions;
   isPassword?: boolean;
+  color?: string;
 }
 
 const InputComponent = (props: Props) => {
@@ -39,6 +40,7 @@ const InputComponent = (props: Props) => {
     numberOfLine,
     type,
     isPassword,
+    color,
   } = props;
 
   const [showPass, setShowPass] = useState(false);
@@ -55,6 +57,7 @@ const InputComponent = (props: Props) => {
             paddingVertical: 14,
             paddingHorizontal: 10,
             alignItems: 'flex-start',
+            backgroundColor: color ?? colors.gray,
           },
         ]}>
         {prefix && prefix}
