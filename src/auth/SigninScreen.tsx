@@ -10,49 +10,63 @@ import {colors} from '../contants/colors';
 import {Text, View} from 'react-native';
 import ButtonComponent from '../components/ButtonComponent';
 import {golabalStyles} from '../styles/globalStyles';
-import SpaceComponent from '../components/SpaceComponent';
 import auth from '@react-native-firebase/auth';
+import {HanhdleUser} from '../utils/handleUser';
 
-const RegisterScreen = ({navigation}: any) => {
+const SigninScreen = ({navigation}: any) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [errorText, setErrorText] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [errorText, setErrorText] = useState('');
 
   useEffect(() => {
-    if (email) {
+    if (email || password) {
       setErrorText('');
     }
-  }, [email]);
+  }, [email, password]);
 
-  const handleCreateAccount = async () => {
-    if (!email) {
-      setErrorText('Please enter your email!!!');
-    } else if (!password || !confirmPassword) {
-      setErrorText('Please enter your password!!!');
-    } else if (password !== confirmPassword) {
-      setErrorText('Password is not match!!!');
-    } else if (password.length < 6) {
-      setErrorText('Password must be to 6 characters');
+  const handleLogin = async () => {
+    if (!email || !password) {
+      setErrorText('Please enter your email and password!!!');
     } else {
+      setErrorText('');
       setIsLoading(true);
       await auth()
-        .createUserWithEmailAndPassword(email, password)
+        .signInWithEmailAndPassword(email, password)
         .then(userCredential => {
           const user = userCredential.user;
-
-          if (user) {
-            console.log(user);
-            setIsLoading(false);
-          }
-        })
-        .catch(error => {
+          HanhdleUser.SaveToDatabase(user);
           setIsLoading(false);
+        })
+        .catch((error: any) => {
           setErrorText(error.message);
+          setIsLoading(false);
         });
     }
   };
+
+  // const handleLogin = async () => {
+  //   if (!email || !password) {
+  //     setErrorText('Please enter your email and password!!!');
+  //   } else {
+  //     setErrorText('');
+  //     setIsLoading(true);
+  //     await auth()
+  //       .signInWithEmailAndPassword(email, password)
+  //       .then(userCredential => {
+  //         const user = userCredential.user;
+
+  //         if (user) {
+  //           console.log(user);
+  //           setIsLoading(false);
+  //         }
+  //       })
+  //       .catch(error => {
+  //         setErrorText(error.message);
+  //         setIsLoading(false);
+  //       });
+  //   }
+  // };
   return (
     <Container>
       <SectionComponent
@@ -61,7 +75,7 @@ const RegisterScreen = ({navigation}: any) => {
           justifyContent: 'center',
         }}>
         <RowComponent styles={{marginBottom: 16}}>
-          <TitleComponent text="SIGN IN" size={32} flex={0} />
+          <TitleComponent text="LOGIN" size={32} flex={0} />
         </RowComponent>
         <InputComponent
           title="Email"
@@ -80,31 +94,19 @@ const RegisterScreen = ({navigation}: any) => {
           placeholder="Password"
           prefix={<Lock size={22} color={colors.gray2} />}
         />
-        <InputComponent
-          title="Comfirm password"
-          isPassword
-          value={confirmPassword}
-          onChange={val => setConfirmPassword(val)}
-          placeholder="Comfirm password"
-          prefix={<Lock size={22} color={colors.gray2} />}
-        />
-
-        {errorText && <TextComponent text={errorText} color="coral" flex={0} />}
-        <SpaceComponent height={20} />
-
         <ButtonComponent
           isLoading={isLoading}
-          text="Register"
-          onPress={handleCreateAccount}
+          text="Login"
+          onPress={handleLogin}
         />
 
         <RowComponent styles={{marginTop: 20}}>
           <Text style={[golabalStyles.text]}>
-            You have an account?{' '}
+            You don't have an account?{' '}
             <Text
               style={{color: 'coral'}}
               onPress={() => navigation.navigate('LoginScreen')}>
-              Login
+              Create an account
             </Text>
           </Text>
         </RowComponent>
@@ -113,4 +115,4 @@ const RegisterScreen = ({navigation}: any) => {
   );
 };
 
-export default RegisterScreen;
+export default SigninScreen;

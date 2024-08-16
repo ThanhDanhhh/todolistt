@@ -5,8 +5,8 @@ import HomeScreen from '../screens/homes/HomeScreen';
 import AddNewTask from '../screens/tasks/AddNewTask';
 import SearchScreen from '../screens/SearchScreen';
 import auth from '@react-native-firebase/auth';
+import SigninScreen from '../auth/SigninScreen';
 import LoginScreen from '../auth/LoginScreen';
-import RegisterScreen from '../auth/RegisterScreen';
 import TaskDetail from '../screens/tasks/TaskDetail';
 
 const Router = () => {
@@ -39,8 +39,8 @@ const Router = () => {
       screenOptions={{
         headerShown: false,
       }}>
+      <Stack.Screen name="SigninScreen" component={SigninScreen} />
       <Stack.Screen name="LoginScreen" component={LoginScreen} />
-      <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
     </Stack.Navigator>
   );
   return isLogin ? MainRouter : AuthNavigator;

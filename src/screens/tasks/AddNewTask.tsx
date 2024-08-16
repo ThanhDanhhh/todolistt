@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Button, View} from 'react-native';
+import {Alert, Button, View} from 'react-native';
 import Container from '../../components/container';
 import DateTimePickerComponent from '../../components/DateTimePickerComponent';
 import InputComponent from '../../components/InputComponent';
@@ -10,7 +10,7 @@ import {Attachment, TaskModel} from '../../models/TaskModel';
 import DropdownPicker from '../../components/DropdownPicker';
 import {SelectModel} from '../../models/SelectModel';
 import {firebase} from '@react-native-firebase/auth';
-import firestore from '@react-native-firebase/firestore';
+import firestore, {updateDoc} from '@react-native-firebase/firestore';
 import ButtonComponent from '../../components/ButtonComponent';
 import TitleComponent from '../../components/TitleComponent';
 import {AttachSquare} from 'iconsax-react-native';
@@ -23,17 +23,19 @@ import TextComponent from '../../components/TextComponent';
 import storage from '@react-native-firebase/storage';
 import UploadFileComponent from '../../components/UploadFileComponent';
 import {fontFamilies} from '../../contants/fontFamilies';
+import auth from '@react-native-firebase/auth';
 
 const initValue: TaskModel = {
   title: '',
   description: '',
-  dueDate: new Date(),
-  start: new Date(),
-  end: new Date(),
+  dueDate: undefined,
+  start: undefined,
+  end: undefined,
   uids: [],
   attachments: [],
-  id: '',
-  fileUrls: [],
+  createdAt: Date.now(),
+  updatedAt: Date.now(),
+  isUrgent: false,
 };
 
 const AddNewTask = ({navigation, route}: any) => {
@@ -42,9 +44,25 @@ const AddNewTask = ({navigation, route}: any) => {
   const [usersSelect, setusersSelect] = useState<SelectModel[]>([]);
   const [attachments, setAttachments] = useState<Attachment[]>([]);
 
+  const user = auth().currentUser;
+
   useEffect(() => {
     handleGetAllUsers();
   }, []);
+
+  useEffect(() => {
+    user && setTaskDetail({...taskDetail, uids: [user.uid]});
+  }, [user]);
+
+  useEffect(() => {
+    task &&
+      setTaskDetail({
+        ...taskDetail,
+        title: task.title,
+        description: task.description,
+        uids: task.uids,
+      });
+  }, [task]);
 
   const handleGetAllUsers = async () => {
     await firestore()
@@ -56,7 +74,10 @@ const AddNewTask = ({navigation, route}: any) => {
         } else {
           const items: SelectModel[] = [];
           snap.forEach(item => {
-            items.push({label: item.data().name, value: item.id});
+            items.push({
+              label: item.data().displayName,
+              value: item.id,
+            });
           });
           setusersSelect(items);
         }
@@ -75,18 +96,35 @@ const AddNewTask = ({navigation, route}: any) => {
   };
 
   const handleAddNewTask = async () => {
-    const data = {
-      ...taskDetail,
-      attachments,
-    };
-    await firestore()
-      .collection('tasks')
-      .add(data)
-      .then(() => {
-        console.log('Nes task added!!');
-        navigation.goBack();
-      })
-      .catch(error => console.log(error));
+    if (user) {
+      const data = {
+        ...taskDetail,
+        attachments,
+        createdAt: task ? task.createdAt : Date.now(),
+        updatedAt: Date.now(),
+      };
+
+      if (task) {
+        await firestore()
+          .doc(`tasks/${task.id}`)
+          .update(data)
+          .then(() => {
+            console.log('Task updated!!');
+            navigation.goBack();
+          });
+      } else {
+        await firestore()
+          .collection('tasks')
+          .add(data)
+          .then(() => {
+            console.log('New task added!!');
+            navigation.goBack();
+          })
+          .catch(error => console.log(error));
+      }
+    } else {
+      Alert.alert('You not login!!!');
+    }
   };
 
   // console.log(attachmentsUrl);
@@ -170,7 +208,10 @@ const AddNewTask = ({navigation, route}: any) => {
         </View>
       </SectionComponent>
       <SectionComponent>
-        <ButtonComponent text="Save" onPress={handleAddNewTask} />
+        <ButtonComponent
+          text={task ? 'Update' : 'Save'}
+          onPress={handleAddNewTask}
+        />
       </SectionComponent>
     </Container>
   );

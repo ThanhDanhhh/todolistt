@@ -9,15 +9,16 @@ import {colors} from '../contants/colors';
 interface Props {
   text: string;
   font?: string;
-  styles?: StyleProp<TextStyle>;
   size?: number;
+  styles?: StyleProp<TextStyle>;
   color?: string;
-  flex?: number;
   height?: number;
+  flex?: number;
+  line?: number;
 }
 
 const TitleComponent = (props: Props) => {
-  const {text, font, size, color, styles, height, flex} = props;
+  const {text, font, size, color, styles, height, flex, line} = props;
   const weight: any =
     Platform.OS === 'ios'
       ? font
@@ -27,6 +28,7 @@ const TitleComponent = (props: Props) => {
 
   return (
     <TextComponent
+      line={line}
       size={size ?? 20}
       font={font ?? fontFamilies.semibold}
       styles={[

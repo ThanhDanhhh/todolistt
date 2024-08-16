@@ -1,16 +1,19 @@
+import {FirebaseFirestoreTypes} from '@react-native-firebase/firestore';
+
 export interface TaskModel {
-  id: string;
+  id?: string;
   title: string;
   description: string;
-  dueDate: Date;
-  start: Date;
-  end: Date;
+  dueDate?: FirebaseFirestoreTypes.Timestamp;
+  start?: FirebaseFirestoreTypes.Timestamp;
+  end?: FirebaseFirestoreTypes.Timestamp;
   uids: string[];
   color?: string;
-  fileUrls: string[];
   attachments: Attachment[];
-
   progress?: number;
+  createdAt: number;
+  isUrgent: boolean;
+  updatedAt: number;
 }
 
 export interface Attachment {
