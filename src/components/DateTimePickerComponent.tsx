@@ -13,7 +13,7 @@ interface Props {
   type?: 'date' | 'time' | 'datetime';
   title?: string;
   placeholder?: string;
-  selected?: Date;
+  selected: Date;
   onSelect: (val: Date) => void;
 }
 

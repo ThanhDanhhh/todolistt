@@ -5,7 +5,7 @@ import {fontFamilies} from '../contants/fontFamilies';
 import {colors} from '../contants/colors';
 
 interface Props {
-  text: string;
+  text?: string;
   size?: number;
   font?: string;
   color?: string;

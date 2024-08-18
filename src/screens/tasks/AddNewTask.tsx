@@ -10,20 +10,13 @@ import {Attachment, TaskModel} from '../../models/TaskModel';
 import DropdownPicker from '../../components/DropdownPicker';
 import {SelectModel} from '../../models/SelectModel';
 import {firebase} from '@react-native-firebase/auth';
-import firestore, {updateDoc} from '@react-native-firebase/firestore';
+import firestore from '@react-native-firebase/firestore';
 import ButtonComponent from '../../components/ButtonComponent';
-import TitleComponent from '../../components/TitleComponent';
-import {AttachSquare} from 'iconsax-react-native';
-import {colors} from '../../contants/colors';
-import DocumentPicker, {
-  DocumentPickerResponse,
-  DocumentPickerOptions,
-} from 'react-native-document-picker';
-import TextComponent from '../../components/TextComponent';
 import storage from '@react-native-firebase/storage';
 import UploadFileComponent from '../../components/UploadFileComponent';
 import {fontFamilies} from '../../contants/fontFamilies';
 import auth from '@react-native-firebase/auth';
+import TextComponent from '../../components/TextComponent';
 
 const initValue: TaskModel = {
   title: '',

@@ -1,8 +1,7 @@
-import {View, Text, Modal} from 'react-native';
+import {View, Text, Modal, TouchableOpacity} from 'react-native';
 import React, {useState} from 'react';
 import {golabalStyles} from '../styles/globalStyles';
 import RowComponent from '../components/RowComponent';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 import TextComponent from '../components/TextComponent';
 import ButtonComponent from '../components/ButtonComponent';
 import {colors} from '../contants/colors';
@@ -73,7 +72,8 @@ const ModalAddSubtask = (props: Props) => {
             <InputComponent
               title="Title"
               placeholder="Title"
-              value={subTask.title}
+              // value={subTask.title}
+              value="helo"
               color={'#212121'}
               // onChange={val => handleChangeValue('title', val)}
               onChange={val => setSubTaskForm({...subTaskForm, title: val})}
@@ -82,7 +82,8 @@ const ModalAddSubtask = (props: Props) => {
             <InputComponent
               title="Description"
               placeholder="Description"
-              value={subTask.description}
+              // value={subTask.description}
+              value="hello"
               // onChange={val => handleChangeValue('description', val)}
               onChange={val =>
                 setSubTaskForm({...subTaskForm, description: val})

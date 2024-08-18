@@ -27,6 +27,9 @@ import {fontFamilies} from '../../contants/fontFamilies';
 import {TaskModel} from '../../models/TaskModel';
 import {golabalStyles} from '../../styles/globalStyles';
 import {HandleDateTime} from '../../utils/handleDateTime';
+import {monthNames} from '../../contants/appinfos';
+
+const date = new Date();
 
 const HomeScreen = ({navigation}: any) => {
   const user = auth().currentUser;
@@ -36,17 +39,25 @@ const HomeScreen = ({navigation}: any) => {
   const [urgentTask, setUrgentTask] = useState<TaskModel[]>([]);
 
   useEffect(() => {
-    getNewTasks();
-    getUrgentTask();
+    getTasks();
+    // getUrgentTask();
   }, []);
 
-  const getNewTasks = () => {
+  useEffect(() => {
+    if (tasks.length > 0) {
+      const items = tasks.filter(element => element.isUrgent);
+
+      setUrgentTask(items);
+    }
+  }, [tasks]);
+
+  const getTasks = () => {
     setIsLoading(true);
 
     firestore()
       .collection('tasks')
       .where('uids', 'array-contains', user?.uid)
-      .limit(3)
+
       .onSnapshot(snap => {
         if (snap.empty) {
           console.log(`tasks not found`);
@@ -58,32 +69,20 @@ const HomeScreen = ({navigation}: any) => {
               ...item.data(),
             });
           });
-          setTasks(items);
+          setTasks(items.sort((a, b) => b.createdAt - a.createdAt));
         }
         setIsLoading(false);
       });
   };
 
-  const getUrgentTask = () => {
-    const filter = firestore()
-      .collection('tasks')
-      .where('uids', 'array-contains', user?.uid)
-      .where('isUrgent', '==', true);
-    filter.onSnapshot(snap => {
-      if (!snap.empty) {
-        const items: TaskModel[] = [];
-        snap.forEach((item: any) => {
-          items.push({
-            id: item.id,
-            ...item.data(),
-          });
-        });
-        setUrgentTask(items);
-      } else {
-        setUrgentTask([]);
-      }
+  const handleMoveToTaskDetail = (id?: string, color?: string) =>
+    navigation.navigate('TaskDetail', {
+      id,
+      color,
     });
-  };
+  function add0Tonumber(arg0: number) {
+    throw new Error('Function not implemented.');
+  }
 
   return (
     <View style={{flex: 1}}>
@@ -111,27 +110,52 @@ const HomeScreen = ({navigation}: any) => {
         <SectionComponent>
           <RowComponent
             styles={[golabalStyles.inputContainer]}
-            onPress={() => navigation.navigate('SearchScreen')}>
+            onPress={() =>
+              navigation.navigate('ListTasks', {
+                tasks,
+              })
+            }>
             <TextComponent color="#696B6F" text="Search task" />
             <SearchNormal1 size={20} color={colors.desc} />
           </RowComponent>
         </SectionComponent>
         <SectionComponent>
-          <CardComponent>
+          <CardComponent
+            onPress={() =>
+              navigation.navigate('ListTasks', {
+                tasks,
+              })
+            }>
             <RowComponent>
               <View style={{flex: 1}}>
                 <TitleComponent text="Task progress" />
-                <TextComponent text="30/40 tasks done" />
+                <TextComponent
+                  text={`${
+                    tasks.filter(
+                      element => element.progress && element.progress === 1,
+                    ).length
+                  }/${tasks.length}`}
+                />
                 <SpaceComponent height={12} />
                 <RowComponent justify="flex-start">
-                  <TagComponent
-                    text="Match 22"
+                  {/* <TagComponent
+                    text={`${monthNames[date.getMonth()]} ${add0Tonumber(
+                      date.getDate(),
+                    )}`}
                     onPress={() => console.log('Say Hi!!!')}
-                  />
+                  /> */}
                 </RowComponent>
               </View>
               <View>
-                <CicularComponent value={80} />
+                <CicularComponent
+                  value={Math.floor(
+                    (tasks.filter(
+                      element => element.progress && element.progress === 1,
+                    ).length /
+                      tasks.length) *
+                      100,
+                  )}
+                />
               </View>
             </RowComponent>
           </CardComponent>
@@ -140,14 +164,22 @@ const HomeScreen = ({navigation}: any) => {
           <ActivityIndicator />
         ) : tasks.length > 0 ? (
           <SectionComponent>
+            <RowComponent
+              onPress={() =>
+                navigation.navigate('ListTasks', {
+                  tasks,
+                })
+              }
+              justify="flex-end"
+              styles={{marginBottom: 16}}>
+              <TextComponent size={16} text="See all" flex={0} />
+            </RowComponent>
             <RowComponent styles={{alignItems: 'flex-start'}}>
               <View style={{flex: 1}}>
-                {tasks[1] && (
+                {tasks[0] && (
                   <CardImageConponent
                     onPress={() =>
-                      navigation.navigate('TaskDetail', {
-                        id: tasks[0].id,
-                      })
+                      handleMoveToTaskDetail(tasks[0].id as string)
                     }>
                     <TouchableOpacity
                       onPress={() =>
@@ -167,7 +199,7 @@ const HomeScreen = ({navigation}: any) => {
                     />
 
                     <View style={{marginVertical: 28}}>
-                      <AvatarGroup uids={tasks[0].uids} />
+                      <AvatarGroup uids={tasks[0].uids} usersName={[]} />
                       {tasks[0].progress &&
                       (tasks[0].progress as number) >= 0 ? (
                         <ProgressBarComponent
@@ -175,7 +207,9 @@ const HomeScreen = ({navigation}: any) => {
                           color="#0AACFF"
                           size="large"
                         />
-                      ) : null}
+                      ) : (
+                        <></>
+                      )}
                     </View>
                     {tasks[0].dueDate && (
                       <TextComponent
@@ -194,10 +228,10 @@ const HomeScreen = ({navigation}: any) => {
                 {tasks[1] && (
                   <CardImageConponent
                     onPress={() =>
-                      navigation.navigate('TaskDetail', {
-                        id: tasks[1].id,
-                        color: 'rgba(33, 150, 243, 0.9)',
-                      })
+                      handleMoveToTaskDetail(
+                        tasks[1].id as string,
+                        'rgba(33, 150, 243, 0.9)',
+                      )
                     }
                     color="rgba(33, 150, 243, 0.9)">
                     <TouchableOpacity
@@ -211,12 +245,16 @@ const HomeScreen = ({navigation}: any) => {
                       <Edit2 size={20} color={colors.white} />
                     </TouchableOpacity>
                     <TitleComponent text={tasks[1].title} size={18} />
-                    {tasks[1].uids && <AvatarGroup uids={tasks[1].uids} />}
-                    {tasks[1].progress && (
+                    {tasks[1].uids && (
+                      <AvatarGroup uids={tasks[1].uids} usersName={[]} />
+                    )}
+                    {tasks[1].progress ? (
                       <ProgressBarComponent
                         percent={`${Math.floor(tasks[1].progress * 100)}%`}
                         color="#A2F068"
                       />
+                    ) : (
+                      <></>
                     )}
                   </CardImageConponent>
                 )}
@@ -225,10 +263,10 @@ const HomeScreen = ({navigation}: any) => {
                 {tasks[2] && (
                   <CardImageConponent
                     onPress={() =>
-                      navigation.navigate('TaskDetail', {
-                        id: tasks[2].id,
-                        color: 'rgba(18, 181, 22, 0.9)',
-                      })
+                      handleMoveToTaskDetail(
+                        tasks[2].id as string,
+                        'rgba(18, 181, 22, 0.9)',
+                      )
                     }
                     color="rgba(18, 181, 22, 0.9)">
                     <TouchableOpacity
@@ -242,7 +280,11 @@ const HomeScreen = ({navigation}: any) => {
                       <Edit2 size={20} color={colors.white} />
                     </TouchableOpacity>
                     <TitleComponent text={tasks[2].title} />
-                    <TextComponent text={tasks[2]} line={3} size={13} />
+                    <TextComponent
+                      text={tasks[2].description}
+                      line={3}
+                      size={13}
+                    />
                   </CardImageConponent>
                 )}
               </View>
@@ -253,21 +295,25 @@ const HomeScreen = ({navigation}: any) => {
         )}
 
         <SectionComponent>
+          <TitleComponent
+            flex={1}
+            font={fontFamilies.bold}
+            size={21}
+            text="Urgents tasks"
+          />
           {urgentTask.length > 0 &&
             urgentTask.map(item => (
               <>
-                <TitleComponent
-                  flex={1}
-                  font={fontFamilies.bold}
-                  size={21}
-                  text="Urgents tasks"
-                />
-                <CardComponent key={`urgentTask${item.id} `}>
+                <CardComponent
+                  onPress={() => handleMoveToTaskDetail(item.id as string)}
+                  key={`urgentTask${item.id}`}
+                  styles={{marginBottom: 12}}>
                   <RowComponent>
                     <CicularComponent
                       value={item.progress ? item.progress * 100 : 0}
-                      radius={36}
+                      radius={40}
                     />
+
                     <View
                       style={{
                         flex: 1,
@@ -310,7 +356,7 @@ const HomeScreen = ({navigation}: any) => {
               width: '80%',
             },
           ]}>
-          <TextComponent text="Add new tasks" />
+          <TextComponent text="Add new tasks" flex={0} />
           <Add size={22} color={colors.white} />
         </TouchableOpacity>
       </View>
