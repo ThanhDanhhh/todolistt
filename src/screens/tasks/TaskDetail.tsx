@@ -140,6 +140,31 @@ const TaskDetail = ({navigation, route}: any) => {
       console.log(error);
     }
   };
+
+  const handleRemoveTask = () => {
+    Alert.alert('confirm', 'Are you sure, toy want delete task?', [
+      {
+        text: 'cancel',
+        style: 'cancel',
+        onPress: () => console.log('cancel'),
+      },
+      {
+        style: 'destructive',
+        onPress: async () => {
+          await firestore()
+            .doc(`tasks/${id}`)
+            .delete()
+            .then(() => {
+              navigation.goBack();
+            })
+            .catch(error => {
+              console.log(error);
+            });
+        },
+      },
+    ]);
+  };
+
   return taskDetail ? (
     <>
       <ScrollView
@@ -193,7 +218,7 @@ const TaskDetail = ({navigation, route}: any) => {
               <TextComponent text={`May 29`} />
             </RowComponent>
             <RowComponent styles={{flex: 1}} justify="flex-end">
-              <AvatarGroup uids={taskDetail.uids} />
+              <AvatarGroup uids={taskDetail.uids} usersName={[]} />
             </RowComponent>
           </RowComponent>
         </SectionComponet>
@@ -339,6 +364,11 @@ const TaskDetail = ({navigation, route}: any) => {
                 </RowComponent>
               </CardComponent>
             ))}
+        </SectionComponet>
+        <SectionComponet>
+          <RowComponent onPress={handleRemoveTask}>
+            <TextComponent text="Delete task" color="red" flex={0} />
+          </RowComponent>
         </SectionComponet>
       </ScrollView>
       {isChanged && (
